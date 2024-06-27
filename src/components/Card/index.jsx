@@ -46,8 +46,12 @@ const CardWrapper = styled.div`
   }
 `
 
-
-function Card({ label, title, picture }) {
+const Availability = styled.p`
+  color: ${props => (props.$available ? '#000000' : '#8186A0')};
+  text-align: center;
+  margin: 5px 0 20px;
+`
+function Card({ label, title, picture, available }) {
   const { theme } = useTheme()
   // const [isFavorite, setIsFavorite] = useState(false)
   // const star = isFavorite ? '⭐️' : ''
@@ -57,6 +61,14 @@ function Card({ label, title, picture }) {
       <CardLabel theme={theme}>{label}</CardLabel>
       <CardImage src={picture} alt="freelance" />
       <CardTitle theme={theme}>{title}</CardTitle>
+      {available === "true"
+      ? <Availability $available>
+          (Disponible maintenant)
+        </Availability>
+      : <Availability>
+          (Indisponible)
+      </Availability>
+      }
     </CardWrapper>
   )
 }

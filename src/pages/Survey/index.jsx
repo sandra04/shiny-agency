@@ -14,6 +14,7 @@ const SurveyContainer = styled.div`
   align-items: center;
   width:90%;
   margin:0 auto;
+  color: ${({ theme }) => theme === 'light' ? "black" : "white"};
 `
 
 const QuestionTitle = styled.h2`
@@ -33,6 +34,9 @@ const LinkWrapper = styled.div`
     margin-right: 20px;
   }
 `
+const SurveyLink = styled(Link)`
+  color: ${({ theme }) => theme === 'light' ? "black" : "white"}!important;
+`
 
 const ReplyBox = styled.button`
 border: none;
@@ -46,7 +50,7 @@ background-color: ${colors.backgroundLight};
 border-radius: 30px;
 cursor: pointer;
 box-shadow: ${(props) =>
-  props.isSelected ? `0px 0px 0px 2px ${colors.primary} inset` : 'none'};
+  props.isSelected ? `0px 0px 0px 4px ${colors.primary} inset` : 'none'};
 &:first-child {
   margin-right: 15px;
 }
@@ -75,9 +79,6 @@ function Survey() {
   const prevQuestionNumber = questionNumberInt === 1 ? 1 : questionNumberInt - 1
   const nextQuestionNumber = questionNumberInt + 1
 
-  /*const [surveyData, setSurveyData] = useState({})
-  const [isDataLoading, setDataLoading] = useState(false)
-  const [error, setError] = useState(null)*/
   const { data, isLoading, error } = useFetch(`http://localhost:8000/survey`)
   const { surveyData } = data
 
@@ -89,59 +90,17 @@ function Survey() {
       saveAnswers({ [questionNumber]: answer })
   }
 
-  /*useEffect(() => {
-      setDataLoading(true)
-      fetch(`http://localhost:8000/survey`)
-          .then((response) => response.json()
-              .then(({ surveyData }) => {
-                  setSurveyData(surveyData)
-                  setDataLoading(false)
-          })
-              .catch((err) => {
-                  console.log(err)
-                  setError(true)
-                  setDataLoading(false)
-              })
-          )
-  }, [])*/
-
   
   const questionsTotal = surveyData ? parseInt(Object.keys(surveyData).length) : undefined
   
 
-  /* Cette syntaxe permet aussi de faire des calls API.
-  La fonction passée à useEffect ne peut pas être asynchrone, elle ne peut donc pas être directement appelée dans les arguments.
-
-
-  useEffect(() => {
-      async function fetchSurvey() {
-          setDataLoading(true)
-
-          try{
-              const response = await fetch(`http://localhost:8000/survey`)
-              // SurveyData est une propriété de l'objet retourné par fetch (on destructure pour le récupérer -> avec syntaxe {})
-              // On parse la réponse avec "response.json()"
-              const { surveyData } = await response.json()
-              setSurveyData(surveyData)
-          }
-          catch(err){
-              console.log(err)
-              setError(true)
-          }
-          finally{
-              setDataLoading(false)
-          }
-      }
-      fetchSurvey()
-  }, [])
-  */
 
   if (error) {
       return <span>Oups, il y a eu un problème</span>
   }
 
   return (
-      <SurveyContainer>
+      <SurveyContainer theme={theme}>
           <h1>Questionnaire 🧮</h1>
           { questionNumberInt <= questionsTotal && <QuestionTitle theme={theme}>Question {questionNumber}</QuestionTitle> }
           {isLoading ? (
@@ -170,11 +129,11 @@ function Survey() {
               </ReplyWrapper>
           }
           <LinkWrapper theme={theme}>
-              { questionNumberInt > 1 && questionNumberInt <= questionsTotal &&<Link to={`/survey/${prevQuestionNumber}`}>Précédent</Link> }
+              { questionNumberInt > 1 && questionNumberInt <= questionsTotal &&<SurveyLink to={`/survey/${prevQuestionNumber}`} theme={theme}>Précédent</SurveyLink> }
               <br/>
-              { questionNumberInt < questionsTotal && <Link to={`/survey/${nextQuestionNumber}`}>Suivant</Link> }
-              { questionNumberInt === questionsTotal && <Link to="/results">Résultats</Link> }
-              { !isLoading && questionNumberInt > questionsTotal && <div><p>Il n'existe pas de question {questionNumber} dans ce questionnaire</p><Link to="/survey/1">Retourner au questionnaire</Link></div> }
+              { questionNumberInt < questionsTotal && <SurveyLink to={`/survey/${nextQuestionNumber}`} theme={theme}>Suivant</SurveyLink> }
+              { questionNumberInt === questionsTotal && <SurveyLink to="/results" theme={theme}>Résultats</SurveyLink> }
+              { !isLoading && questionNumberInt > questionsTotal && <div><p>Il n'existe pas de question {questionNumber} dans ce questionnaire</p><SurveyLink to="/survey/1" theme={theme}>Retourner au questionnaire</SurveyLink></div> }
           </LinkWrapper>
       </SurveyContainer>
   )

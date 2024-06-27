@@ -28,7 +28,6 @@ function Footer() {
 
     return (
         <FooterContainer>
-            {/* On modifie le state "theme" au clic sur le bouton, via la fonction "toggleTheme" */}
             <NightModeButton onClick={() => toggleTheme()}>
                 Changer de mode : {theme === 'light' ? '🌙' : '☀️'}
             </NightModeButton>

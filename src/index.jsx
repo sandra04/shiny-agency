@@ -40,7 +40,7 @@ root.render(
             <Route path="/results" element={<Results/>} />
             <Route path="/freelances" element={<Freelances/>} />
             <Route path="/profile/:id" element={<Profile />} />
-            {/* Toutes les routes qui ne sont pas listées ci-dessous mèneront vers notre composant Error */}
+            {/* Toutes les routes qui ne sont pas listées ci-dessus mèneront vers notre composant Error */}
             <Route path="*" element={<Error />} />
           </Routes>
           <Footer/>
